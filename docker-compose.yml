@@ -1,0 +1,24 @@
+version: '3'
+services:
+  employee:
+    build: .
+    ports:
+      - "9090:9090"
+    depends_on:
+      - rabbitmq
+    networks:
+      - rabbitmq_spring
+  rabbitmq:
+    image: rabbitmq:3.8.3-management-alpine
+    container_name: rabbitmq
+    ports:
+      - "5673:5672"
+      - "15673:15672"
+    volumes:
+          - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
+          - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
+    networks:
+      - rabbitmq_spring
+networks:
+  rabbitmq_spring:
+    driver: bridge
